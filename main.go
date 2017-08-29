@@ -49,6 +49,11 @@ func main() {
 			{
 				users.GET("/me", http_handlers.GetMeAction)
 			}
+
+			groups := private.Group("/groups")
+			{
+				groups.POST("", http_handlers.CreateGroupAction)
+			}
 		}
 	}
 

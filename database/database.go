@@ -39,11 +39,12 @@ func SeedDatabase() {
 
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Sport{})
+	db.AutoMigrate(&models.Group{})
 
 	db.Exec("TRUNCATE TABLE sports;")
 
 	db.Create(&models.Sport{
-		Name: "Table Tennis",
+		Name:              "Table Tennis",
 		PlayerCountInTeam: 1,
 		Model: models.Model{
 			CreatedAt: time.Now(),
@@ -51,7 +52,7 @@ func SeedDatabase() {
 		},
 	})
 	db.Create(&models.Sport{
-		Name: "Table Football 1v1",
+		Name:              "Table Football 1v1",
 		PlayerCountInTeam: 1,
 		Model: models.Model{
 			CreatedAt: time.Now(),
@@ -59,7 +60,7 @@ func SeedDatabase() {
 		},
 	})
 	db.Create(&models.Sport{
-		Name: "Table Football 2v2",
+		Name:              "Table Football 2v2",
 		PlayerCountInTeam: 2,
 		Model: models.Model{
 			CreatedAt: time.Now(),

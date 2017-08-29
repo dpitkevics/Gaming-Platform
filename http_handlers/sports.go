@@ -1,12 +1,12 @@
 package http_handlers
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/dpitkevics/GamingPlatform/database"
 	"github.com/dpitkevics/GamingPlatform/models"
-	"net/http"
 	"github.com/dpitkevics/GamingPlatform/responses"
 	"github.com/dpitkevics/GamingPlatform/services"
+	"github.com/gin-gonic/gin"
+	"net/http"
 	"strconv"
 )
 
@@ -18,7 +18,7 @@ func GetAllSportsAction(context *gin.Context) {
 
 	context.SecureJSON(http.StatusOK, responses.Response{
 		Status: http.StatusOK,
-		Data: &sports,
+		Data:   &sports,
 	})
 }
 
@@ -26,7 +26,7 @@ func GetSportAction(context *gin.Context) {
 	sportId, err := strconv.Atoi(context.Param("sportId"))
 	if err != nil {
 		context.SecureJSON(http.StatusBadRequest, responses.ErrorResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: err.Error(),
 		})
 		return
@@ -35,7 +35,7 @@ func GetSportAction(context *gin.Context) {
 	sport := services.GetSportById(sportId)
 	if sport == nil {
 		context.SecureJSON(http.StatusBadRequest, responses.ErrorResponse{
-			Status: http.StatusBadRequest,
+			Status:  http.StatusBadRequest,
 			Message: "Sport not found",
 		})
 		return
@@ -43,6 +43,6 @@ func GetSportAction(context *gin.Context) {
 
 	context.SecureJSON(http.StatusOK, responses.Response{
 		Status: http.StatusOK,
-		Data: sport,
+		Data:   sport,
 	})
 }

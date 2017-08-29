@@ -13,7 +13,9 @@ func GetUserByUsername(username string) *models.User {
 	var user models.User
 
 	db := database.GetDatabase()
-	db.Where("username = ?", username).First(&user)
+	if notFound := db.Where("username = ?", username).First(&user).RecordNotFound(); notFound == true {
+		return nil
+	}
 
 	return &user
 }
