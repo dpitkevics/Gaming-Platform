@@ -5,15 +5,14 @@ import (
 	"github.com/dpitkevics/GamingPlatform/database"
 	"github.com/dpitkevics/GamingPlatform/models"
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 	"time"
 )
 
-var db *gorm.DB = database.GetDatabase()
-
 func GetUserByUsername(username string) *models.User {
 	var user models.User
+
+	db := database.GetDatabase()
 	db.Where("username = ?", username).First(&user)
 
 	return &user
@@ -48,6 +47,7 @@ func CreateUser(user *models.User) (*models.User, error) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
+	db := database.GetDatabase()
 	db.Create(user)
 
 	return user, nil

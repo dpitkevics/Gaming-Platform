@@ -40,6 +40,8 @@ func SeedDatabase() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Sport{})
 
+	db.Exec("TRUNCATE TABLE sports;")
+
 	db.Create(&models.Sport{
 		Name: "Table Tennis",
 		PlayerCountInTeam: 1,

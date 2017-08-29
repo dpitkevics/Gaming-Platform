@@ -34,6 +34,12 @@ func main() {
 				auth.POST("/register", http_handlers.CreateUserAction)
 				auth.POST("/login", authMiddleware.LoginHandler)
 			}
+
+			sports := public.Group("/sports")
+			{
+				sports.GET("", http_handlers.GetAllSportsAction)
+				sports.GET("/:sportId", http_handlers.GetSportAction)
+			}
 		}
 
 		private := api.Group("")
