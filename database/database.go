@@ -40,6 +40,10 @@ func SeedDatabase() {
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Sport{})
 	db.AutoMigrate(&models.Group{})
+	db.AutoMigrate(&models.GroupInvitation{}).
+		AddForeignKey("owner_id", "users(id)", "CASCADE", "CASCADE").
+		AddForeignKey("invited_user_id", "users(id)", "CASCADE", "CASCADE").
+		AddForeignKey("group_id", "groups(id)", "CASCADE", "CASCADE")
 
 	db.Exec("TRUNCATE TABLE sports;")
 

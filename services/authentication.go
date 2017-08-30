@@ -9,6 +9,17 @@ import (
 	"time"
 )
 
+func GetUserById(userId int) *models.User {
+	var user models.User
+
+	db := database.GetDatabase()
+	if notFound := db.First(&user, userId).RecordNotFound(); notFound == true {
+		return nil
+	}
+
+	return &user
+}
+
 func GetUserByUsername(username string) *models.User {
 	var user models.User
 
@@ -26,12 +37,11 @@ func GetUserByUsernameAndPassword(username string, password string) *models.User
 		return nil
 	}
 
-	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	if err != nil {
-		return nil
+	if CheckPasswordHash(password, user.Password) {
+		return user
 	}
 
-	return user
+	return nil
 }
 
 func GetAuthenticatedUser(context *gin.Context) *models.User {
@@ -45,7 +55,7 @@ func CreateUser(user *models.User) (*models.User, error) {
 		return nil, err
 	}
 
-	user.Password = string(password)
+	user.Password = password
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
@@ -55,21 +65,16 @@ func CreateUser(user *models.User) (*models.User, error) {
 	return user, nil
 }
 
-func GetHashedPassword(password string) (string, error) {
-	defer clear(password)
+func CheckPasswordHash(password string, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
 
+func GetHashedPassword(password string) (string, error) {
 	newPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
 	}
 
 	return string(newPassword), nil
-}
-
-func clear(s string) {
-	b := []byte(s)
-
-	for i := 0; i < len(b); i++ {
-		b[i] = 0
-	}
 }

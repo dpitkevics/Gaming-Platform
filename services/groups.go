@@ -22,3 +22,14 @@ func AssignGroupToUser(group *models.Group, user *models.User) {
 	db := database.GetDatabase()
 	db.Save(user)
 }
+
+func GetGroupById(groupId int) *models.Group {
+	var group models.Group
+
+	db := database.GetDatabase()
+	if notFound := db.First(&group, groupId).RecordNotFound(); notFound == true {
+		return nil
+	}
+
+	return &group
+}

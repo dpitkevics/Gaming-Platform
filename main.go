@@ -54,6 +54,14 @@ func main() {
 			{
 				groups.POST("", http_handlers.CreateGroupAction)
 			}
+
+			invitations := private.Group("/invitations")
+			{
+				invitations.POST("", http_handlers.CreateGroupInvitationAction)
+				invitations.GET("/:invitationId", http_handlers.GetGroupInvitationAction)
+				invitations.POST("/:invitationId/accept", http_handlers.AcceptGroupInvitationAction)
+				invitations.POST("/:invitationId/decline", http_handlers.DeclineGroupInvitationAction)
+			}
 		}
 	}
 
